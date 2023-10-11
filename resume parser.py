@@ -1,14 +1,29 @@
-import PyPDF2
+from pikepdf import Pdf, Name, PdfImage
 
-# Open the PDF file
-with open('/data/English/resume1.pdf', 'rb') as pdf_file:
-    pdf_reader = PyPDF2.PdfFileReader(pdf_file)
-    print(pdf_reader)
-    """
-    text = ""
-    for page_num in range(pdf_reader.numPages):
-        page = pdf_reader.getPage(page_num)
-        text += page.extractText()
-        """
+pdf = Pdf.open("./data/English/resume1.pdf")
+page = pdf.pages[0]
+print(list(page.images.keys()))
 
-# 'text' now contains the extracted text from the PDF
+raw = page.images['/X4']
+pdf_image = PdfImage(raw)
+
+print(page)
+
+# How to know exactly that the extracted image is
+# the applicant image and not background image or icon ?????
+
+
+
+
+
+"""
+import fitz
+doc = fitz.open('./data/Frensh/resume1.pdf')
+
+page = doc[0]
+
+text = page.get_text()
+links = page.get_links()
+
+print(links)
+"""
