@@ -13,7 +13,6 @@ with open('data/Frensh/resume4.txt', 'w', encoding='utf-8') as f:
     f.write(text)
 
 
-
 # face detection function
 def detect_face(page):
     if page.images:
