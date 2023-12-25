@@ -34,12 +34,12 @@ def process_applicants():
                 # Convert base64 resume to text
                 resume_text = base64_to_text(resume_base64)
                 # Process the resume text and description
-                firstname, lastname, email, score = parse_resume(resume_text, descriptions)
+                firstname, lastname, email, score, phone = parse_resume(resume_text, descriptions)
                 # Update applicant with new data
-                update_applicant(applicant["_id"], firstname, lastname, email, score)
+                update_applicant(applicant["_id"], firstname, lastname, email, score, phone)
 
     except Exception as e:
-        print(f"Error processing applicants: {str(e)}")
+        print(f"Error processing applicants: {e}")
 
 
 def base64_to_text(base64_data):
@@ -72,8 +72,7 @@ def extract_text_from_pdf(file_path):
         return ""
 
 
-
-def update_applicant(applicant_id, firstname=None, lastname=None, email=None, score=None):
+def update_applicant(applicant_id, firstname=None, lastname=None, email=None, score=None, phone=None):
     update_data = {"applicationStatus": APPLICATION_STATUS_CHECKED}
 
     if firstname is not None:
@@ -84,6 +83,8 @@ def update_applicant(applicant_id, firstname=None, lastname=None, email=None, sc
         update_data["email"] = email
     if score is not None:
         update_data["score"] = score
+    if phone is not None:
+        update_data["phone"] = phone
 
     try:
         applicants_collection.update_one({"_id": applicant_id}, {"$set": update_data})
@@ -92,7 +93,7 @@ def update_applicant(applicant_id, firstname=None, lastname=None, email=None, sc
 
 
 # Schedule the job to run every day at 6:00 AM
-schedule.every().day.at("04:36").do(process_applicants)
+schedule.every().day.at("07:00").do(process_applicants)
 
 while True:
     schedule.run_pending()

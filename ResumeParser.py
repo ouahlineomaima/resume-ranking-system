@@ -1,11 +1,4 @@
-from pikepdf import Pdf, Name, PdfImage  # used for extracting images only
-import cv2
-import numpy as np
-import fitz  # used for text extraction
 import spacy
-import pickle
-import random
-import sys
 
 
 def parse_resume(text, descriptions):
@@ -39,6 +32,10 @@ def parse_resume(text, descriptions):
     tools = entities_by_label.get("TOOL", [])
     # Extract the skills from the entities_by_label dictionary
     skills = entities_by_label.get("SKILL", [])
+    phones = entities_by_label.get("PHONE_NUMBER", [])
+    phone = None
+    if len(phones) > 0:
+        phone = "|".join(phones)
     # Loop through the technologies
     for technology in technologies:
         # Check if the technology is in the programming_languages
@@ -51,5 +48,5 @@ def parse_resume(text, descriptions):
         if technology in skills:
             score += 1
     # return the firstname, lastname, email and score
-    return firstname, lastname, email, score
+    return firstname, lastname, email, score, phone
 
